@@ -71,6 +71,7 @@ async function createWindow() {
 
   const window = new BrowserWindow({
     title: 'Pitch | Robotics Drive Layout',
+    icon: path.join(__dirname, 'Pitch.ico'),
     width: 1360,
     height: 900,
     minWidth: 920,

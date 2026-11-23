@@ -18,5 +18,9 @@ $app = New-Item -ItemType Directory "$stage/Pitch/resources/app"
 Copy-Item desktop,dist -Destination $app -Recurse
 Copy-Item desktop/application.json "$app/package.json"
 Rename-Item "$stage/Pitch/electron.exe" 'Pitch.exe'
+$editor = "$stage/rcedit-x64.exe"
+Invoke-WebRequest 'https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe' -OutFile $editor
+& $editor "$stage/Pitch/Pitch.exe" --set-icon (Resolve-Path 'desktop/Pitch.ico').Path
+if ($LASTEXITCODE) { throw 'Could not embed the Pitch icon' }
 tar.exe -a -cf Pitch-Windows-x64.zip -C $stage Pitch
 if ($LASTEXITCODE) { throw 'Archive creation failed' }

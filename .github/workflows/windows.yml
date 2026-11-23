@@ -1,0 +1,19 @@
+name: Release Windows desktop
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: ./Build-Windows.ps1
+      - run: npm test
+      - run: gh release create "${{ github.ref_name }}" Pitch-Windows-x64.zip --verify-tag --title "Pitch for Windows ${{ github.ref_name }}" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
